@@ -1,0 +1,26 @@
+import pandas as pnd
+
+dt = 1
+z_eps = 100
+
+def f(P0):
+    return -mg
+
+def def runge_kutta_4(f, t0, P0, k):
+    solution = [(t0, P0)]
+    t = t0
+    P = P0
+
+    for _ in range(num_steps):
+        k1 = dt * f(t, P, k)
+        k2 = dt * f(t + 0.5 * dt, P + 0.5 * k1, k)
+        k3 = dt * f(t + 0.5 * dt, P + 0.5 * k2, k)
+        k4 = dt * f(t + dt, P + k3, k)
+
+        P = P + (k1 + 2 * k2 + 2 * k3 + k4) / 6
+        t = t + dt
+
+        solution.append((t, P))
+
+        if z <= 100:
+            return (x, y)
