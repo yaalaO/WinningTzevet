@@ -12,8 +12,8 @@ def model(inputs, params):
     :param mf: final mass of the rocket
     :return: the acc in x, y, z
     """
-    x, y, z, vx, vy, vz = inputs
-    c, mf, factor, b = params
+    x, y, z, vx, vy, vz, mf = inputs
+    c, factor, b = params
     total_v = np.sqrt(vx ** 2 + vy ** 2 + vz ** 2)
     drag_force = c * np.exp(-(z + b) / factor) * total_v ** 2
 
@@ -63,8 +63,8 @@ def fit_model(x, y, z, vx, vy, vz, ax, ay, az, mf):
     mf is a an intger that is the final mass of the rocket
     """
 
-    inputs_data = [x, y, z, vx, vy, vz]
-    initial_guess = [1, 10.4, 1000]  # c, factor, off_in_z
+    inputs_data = np.array([x, y, z, vx, vy, vz, mf])
+    initial_guess = np.array([1, 10.4, 1000])  # c, factor, off_in_z
 
     # Perform the optimization
     result = minimize(cost_function, initial_guess,
