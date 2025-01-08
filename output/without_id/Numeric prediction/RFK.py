@@ -33,6 +33,6 @@ def runge_kutta_4(f, t0, P0, num_steps):
     fig, ax = plt.subplots()
     ax.plot(t, z)
     plt.show()
-    plt.holdon()
+
 
 runge_kutta_4(f, 0, np.array([0, 0, 0, 2, 3, 100]), 50)

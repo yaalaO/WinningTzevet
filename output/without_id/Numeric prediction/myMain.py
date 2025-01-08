@@ -22,8 +22,7 @@ def show_table(table, parameter1, parameter2):
         for parameter in parameter2:
             plt.plot(table[parameter1], table[parameter])
     else:
-        plt.plot(table[parameter1], table[parameter2])
-    plt.show()
+        plt.plot(table[parameter1][2:-2], table[parameter2][2:-2])
 
 def take_data():
     original_table = load_file(
@@ -33,9 +32,19 @@ def take_data():
         show_table(table, "time", ["x", "y", "z"])
 
 
-if __name__ == "__nane__":
+def plot_table(t, var):
+    plt.plot(t, var)
+
+
+if __name__ == "__main__":
     original_table = load_file(
-        "input/with_id/With ID/Target point data/Tseelim_with_ID.csv")
+        r"Tseelim_with_ID.csv")
     tables = separate_by_ids(original_table)
 
-    print(tables[151], 0)
+    t, x = predict_hit(tables[151], 0)
+    plt.figure(1)
+    show_table(tables[151], "time", "x")
+    plt.figure(2)
+    plot_table(t, x)
+    plt.show()
+
