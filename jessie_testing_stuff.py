@@ -1,3 +1,18 @@
-biggest_id = 5
-all_tables_by_id = {key:0 for key in range(1, int(biggest_id)+1)}
-print(all_tables_by_id)
+###################################
+#     finding averege framerate   #
+#############################3##3##
+import pandas as pd
+from main import *
+
+
+
+
+
+
+df = load_file(
+        "input/with_id/With ID/Target bank data/Kiryat_Gat_with_ID.csv", KIRYAT_GAT)
+sum1 = 0
+for i in range(len(df)-1):
+    sum1 += -df['time'][i] + df['time'][i+1]
+print(sum1/len(df))
+
