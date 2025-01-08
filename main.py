@@ -56,26 +56,26 @@ def parabola(t, a, b, c):
 def linear(t, a, b):
     return a * t + b
 
+if __name__ == "__main__":
+    original_table = load_file(
+        "input/with_id/With ID/Target bank data/Carmel_with_ID.csv", CARMEL)
+    tables = separate_by_ids(original_table)
+    for table in tables[0:20]:
+        paramsz, _ = curve_fit(parabola, table['time'], table['z'])
+        az, bz, cz = paramsz
+        paramsx, _ = curve_fit(linear, table['time'], table['x'])
+        ax, bx = paramsx
+        paramsy, _ = curve_fit(linear, table['time'], table['y'])
+        ay, by = paramsy
+        plt.plot(table["time"], parabola(table["time"], az, bz, cz))
+        plt.plot(table["time"], linear(table["time"], ax, bx))
+        plt.plot(table["time"], linear(table["time"], ay, by))
 
-original_table = load_file(
-    "input/with_id/With ID/Target point data/Carmel_with_ID.csv", CARMEL)
-tables = separate_by_ids(original_table)
-for table in tables[0:20]:
-    paramsz, _ = curve_fit(parabola, table['time'], table['z'])
-    az, bz, cz = paramsz
-    paramsx, _ = curve_fit(linear, table['time'], table['x'])
-    ax, bx = paramsx
-    paramsy, _ = curve_fit(linear, table['time'], table['y'])
-    ay, by = paramsy
-    plt.plot(table["time"], parabola(table["time"], az, bz, cz))
-    plt.plot(table["time"], linear(table["time"], ax, bx))
-    plt.plot(table["time"], linear(table["time"], ay, by))
+        time_of_crash = (- bz + np.sqrt(bz**2 - 4*az*cz))
+        x_crash = linear(time_of_crash, ax, bx)
+        y_crash = linear(time_of_crash, ay, by)
+        print(time_of_crash, x_crash, y_crash)
 
-    time_of_crash = (- bz + np.sqrt(bz**2 - 4*az*cz))
-    x_crash = linear(time_of_crash, ax, bx)
-    y_crash = linear(time_of_crash, ay, by)
-    print(time_of_crash, x_crash, y_crash)
-
-    show_table(table, "time", ["x", "y", "z"])
-    # show_table(table, "time", ["dx/dt", "dy/dt", "dz/dt"])
+        show_table(table, "time", ["x", "y", "z"])
+        # show_table(table, "time", ["dx/dt", "dy/dt", "dz/dt"])
 
