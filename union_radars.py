@@ -49,7 +49,6 @@ def combine_all_tables(loc_in_dir):
 #     else:
 #         all_tables_by_id[current_id] = pd.concat([all_tables_by_id[current_id], table_index], axis=0)
 
-
 def get_value_at_time(rocket_table, wanted_value: str, time):
     prev_time = rocket_table['time'][0]
     for i_line in range(1, len(rocket_table)):
@@ -68,4 +67,8 @@ def get_value_at_time(rocket_table, wanted_value: str, time):
             return approximation
         prev_time = current_time
     return False
+
+
+def find_max_v_index(table, id):
+    return table[id]["dz/dt"].index(max(table[id]["dz/dt"]))
 
