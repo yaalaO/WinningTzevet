@@ -1,4 +1,6 @@
 import pandas as pnd
+import matplotlib as mpl
+
 
 dt = 1
 z_eps = 100
@@ -6,7 +8,7 @@ z_eps = 100
 def f(P0):
     return -mg
 
-def def runge_kutta_4(f, t0, P0, k):
+def def runge_kutta_4(f, t0, P0, k, num_steps):
     solution = [(t0, P0)]
     t = t0
     P = P0
