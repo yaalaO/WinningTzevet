@@ -18,19 +18,19 @@ tables = separate_by_ids(original_table)
 ########################
 
 def extract_max_z_with_time(table):
-    dat = (table[["time", 'z']]).copy()
+    dat = (table[["time", 'z']]).copy().reset_index()
     dat.sort_values(by='time', inplace=True)
     start = dat['time'][0]
     dat.sort_values(by='z', inplace=True)
-    end = dat['time']
-    max_z = dat['z']
+    end = dat['time'][len(dat)-1]
+    max_z = dat['z'][len(dat)-1]
 
     time_to_max = end - start
     return max_z, time_to_max
 
 
-print(tables[0]['z'])
 
+print(extract_max_z_with_time(tables[0]))
 
 
 
