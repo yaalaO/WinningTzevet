@@ -16,9 +16,20 @@ CARMEL = (32.65365306190331, 35.03028065430696)
 ORIGIN = (29.490675, 34.902588)
 
 
-def get_radar_xy(ladlong):
-    x = EARTH_RADIUS*np.pi*(ladlong[0]-ORIGIN[0])/180
-    y = EARTH_RADIUS * np.pi * (ladlong[1] - ORIGIN[1]) / 180
+def get_radar_xy(latlong):
+    a = 6378137.0  # semi-major axis in meters
+    f = 1 / 298.257223563  # flattening
+    e2 = 2 * f - f ** 2  # eccentricity squared
+    R = a  # in meters
+    lat_rad = np.radians(latlong[0])
+    lon_rad = np.radians(latlong[1])
+    R_long = R / np.sqrt(1 - e2 * np.sin(lat_rad) ** 2)
+    lat_ref = 0  # Reference latitude (equator)
+    lon_ref = 0  # Reference longitude (prime meridian)
+    delta_lat = lat_rad - np.radians(lat_ref)
+    delta_lon = lon_rad - np.radians(lon_ref)
+    x = R_long * delta_lon  # Longitude adjustment based on latitude
+    y = R * delta_lat  # Latitude is constant
     return x, y
 
 
@@ -43,9 +54,9 @@ def separate_by_ids(table):
 def show_table(table, parameter1, parameter2):
     if type(parameter2) == list:
         for parameter in parameter2:
-            plt.plot(table[parameter1], table[parameter])
+            plt.scatter(table[parameter1], table[parameter])
     else:
-        plt.plot(table[parameter1], table[parameter2])
+        plt.scatter(table[parameter1], table[parameter2])
     plt.show()
 
 

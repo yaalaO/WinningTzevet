@@ -1,15 +1,23 @@
 from sklearn.cluster import KMeans
 from main import *
 import os.path
+from union_radars import *
+import pandas as pd
 
 
 ########################
 #     data             #
 ########################
 
-original_table = load_file(
-    "input/with_id/With ID/Target bank data/Ashdod_with_ID.csv")
-tables = separate_by_ids(original_table)
+loc = "input/with_id/With ID/Impact points data/"
+all_tables = combine_all_tables(loc)
+biggest_i = len(all_tables) -1
+df = pd.DataFrame({"rocket": [i for i in range(1, biggest_i+1)], "max_v": []})
+
+for rocket in range(1, len(all_tables)+1):
+    df['max_v'][rocket] =
+
+
 
 
 
@@ -17,39 +25,22 @@ tables = separate_by_ids(original_table)
 #        funcs         #
 ########################
 
-def extract_max_z_with_time(table):
-    dat = (table[["time", 'z']]).copy().reset_index()
-    dat.sort_values(by='time', inplace=True)
-    start = dat['time'][0]
-    dat.sort_values(by='z', inplace=True)
-    end = dat['time'][len(dat)-1]
-    max_z = dat['z'][len(dat)-1]
-
-    time_to_max = end - start
-    return max_z, time_to_max
-
-
-
-print(extract_max_z_with_time(tables[0]))
-
-
 
 
 
 ########################
 #     algorithm        #
 ########################
-if False:
-    kmeans = KMeans(init="random", n_clusters=4, n_init=10, max_iter=300, random_state=42 )
-    kmeans.fit(tables) #Replace your training dataset instead of x_train
-    # The lowest SSE value
-    print(kmeans.inertia_)
-    # Final locations of the centroid
-    print(kmeans.cluster_centers_)
-    # The number of iterations required to converge
-    print(kmeans.n_iter_)
-    # first five predicted labels
-    print(kmeans.labels_[:5])
+kmeans = KMeans(init="random", n_clusters=4, n_init=10, max_iter=300, random_state=42 )
+kmeans.fit(tables) #Replace your training dataset instead of x_train
+# The lowest SSE value
+print(kmeans.inertia_)
+# Final locations of the centroid
+print(kmeans.cluster_centers_)
+# The number of iterations required to converge
+print(kmeans.n_iter_)
+# first five predicted labels
+print(kmeans.labels_[:5])
 
 
 # init controls the initialization technique. The standard version of the k-means algorithm is implemented by setting init to "random". Setting this to "k-means++" employs an advanced trick to speed up convergence, which you’ll use later.

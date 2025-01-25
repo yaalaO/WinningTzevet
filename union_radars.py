@@ -1,7 +1,10 @@
+import matplotlib
 import pandas as pd
 import numpy as np
 from main import *
 import os
+matplotlib.use('Qt5Agg')
+from scipy.optimize import curve_fit
 
 city_dict = {"Ashdod": ASHDOD, "Carmel": CARMEL, "Gosh": GOSH_DAN, "Kiryat": KIRYAT_GAT, "Meron": MERON,
              "Modiin": MODIIN, "Ofakim": OFAKIM, "Tseelim": TSEELIM, "YABA": YABA}
@@ -69,6 +72,41 @@ def get_value_at_time(rocket_table, wanted_value: str, time):
     return False
 
 
+#ujjgj
 def find_max_v_index(table, id):
     return table[id]["dz/dt"].index(max(table[id]["dz/dt"]))
 
+
+def smooth_by_time(rocket_table, value_to_smooth):
+    df = pd.DataFrame({'time': [], 'value': []})
+
+
+def linear(t, a, b):
+    return a * t + b
+
+
+def get_slope(table, parameter):
+    params, _ = curve_fit(linear, table['time'], table[parameter])
+    a, _ = params
+    return a
+
+
+def get_last_state(id_tables):
+    last_data = id_tables.nlargest(30, "time")
+    speed_x = get_slope(last_data, "x")
+    speed_y = get_slope(last_data, "y")
+    speed_z = get_slope(last_data, "z")
+    x = np.mean(last_data["x"])
+    y = np.mean(last_data["y"])
+    z = np.mean(last_data["z"])
+    return (x, y, z), (speed_x, speed_y, speed_z)
+
+
+
+#
+all_of_them = combine_all_tables("input/with_id/With ID/Impact points data/")
+# first_rocket_by_dz = all_of_them[1][['time', 'dz/dt']][0:30]
+#
+show_table(all_of_them[1], 'time', 'z')
+
+print(get_last_state(all_of_them[1]))
